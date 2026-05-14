@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16, 18, 20]
+        node-version: [18, 20, 22] # Updated to remove deprecated Node 16
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -18,9 +18,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm' # Speeds up runs and reduces download errors
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci # Ensures a clean, reliable build from package-lock.json
 
       - name: Run tests on Node.js ${{ matrix.node-version }}
         run: npm test
