@@ -2,14 +2,16 @@ name: Node.js Matrix Testing
 
 on:
   push:
+    branches: [ main, master ]
   pull_request:
+    branches: [ main, master ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20, 22] # Updated to remove deprecated Node 16
+        node-version: [18, 20, 22]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -18,10 +20,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm' # Speeds up runs and reduces download errors
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci # Ensures a clean, reliable build from package-lock.json
+        run: npm ci
 
-      - name: Run tests on Node.js ${{ matrix.node-version }}
+      - name: Run tests
         run: npm test
